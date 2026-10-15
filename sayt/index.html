@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="uz" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Huquq va Tarbiya Ta'lim Portali | Maktab BSB</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#0284c7', 600: '#0369a1', 700: '#075985', 900: '#0c4a6e' },
+                        gold: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'marquee': 'marquee 25s linear infinite'
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(2, 132, 199, 0.3);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(2, 132, 199, 0.6);
+        }
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+        @media (min-width: 640px) {
+            input, select, textarea {
+                font-size: 0.875rem !important;
+            }
+        }
+        .marquee-inner {
+            display: inline-flex;
+            white-space: nowrap;
+        }
+        .marquee-inner:hover {
+            animation-play-state: paused;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-certificate, #printable-certificate * {
+                visibility: visible;
+            }
+            #printable-certificate {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 20px;
+                background: white !important;
+                color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200 min-h-screen flex flex-col pb-20 md:pb-0 overflow-x-hidden">
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 transform -translate-y-10 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900/95 dark:bg-white/95 text-white dark:text-slate-900 px-5 py-2.5 rounded-full shadow-2xl text-xs sm:text-sm font-semibold flex items-center gap-2 border border-slate-700/50">
+        <i id="toast-icon" data-lucide="check-circle" class="w-4 h-4 text-emerald-400 dark:text-emerald-600"></i>
+        <span id="toast-text">Xabar yuborildi!</span>
+    </div>
+    <!-- TOP NAV BAR -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none" onclick="switchTab('home')">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-sky-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-sky-500/20 flex-shrink-0">
+                        <i data-lucide="scale" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight flex items-center gap-1">
+                            ADOLAT <span class="text-sky-600 dark:text-sky-400">&</span> TARBIYA
+                        </span>
+                        <p class="text-[9px] sm:text-[10px] text-slate-500 font-medium leading-none hidden xs:block">Milliy ta'lim va maktab BSB portali</p>
+                    </div>
+                </div>
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-1">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-sky-600 bg-sky-50 dark:bg-slate-800 dark:text-sky-400 transition">
+                        <i data-lucide="home" class="w-4 h-4"></i> Bosh sahifa
+                    </button>
+                    <button onclick="switchTab('yangiliklar')" id="nav-yangiliklar" class="nav-btn relative px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="newspaper" class="w-4 h-4"></i> Yangiliklar
+                        <span class="absolute -top-1 -right-1 flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                    </button>
+                    <button onclick="switchTab('huquq')" id="nav-huquq" class="nav-btn px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i> Huquq
+                    </button>
+                    <button onclick="switchTab('tarbiya')" id="nav-tarbiya" class="nav-btn px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="heart" class="w-4 h-4"></i> Tarbiya
+                    </button>
+                    <button onclick="switchTab('videolar')" id="nav-videolar" class="nav-btn px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="video" class="w-4 h-4"></i> Video darslar
+                    </button>
+                    <button onclick="switchTab('testlar')" id="nav-testlar" class="nav-btn px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="award" class="w-4 h-4"></i> Testlar
+                    </button>
+                    <button onclick="switchTab('lugat')" id="nav-lugat" class="nav-btn px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="book-open" class="w-4 h-4"></i> Lug'at
+                    </button>
+                    <button onclick="switchTab('chatbot')" id="nav-chatbot" class="nav-btn px-2.5 xl:px-3 py-2 rounded-lg text-xs xl:text-sm font-semibold flex items-center gap-1.5 text-slate-600 hover:text-sky-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition">
+                        <i data-lucide="bot" class="w-4 h-4"></i> AI Maslahatchi
+                    </button>
+                </nav>
+                <!-- Actions Right -->
+                <div class="flex items-center gap-1.5 sm:gap-2">
+                    <button onclick="switchTab('yangiliklar')" class="relative p-2 rounded-xl text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 focus:outline-none" title="So'nggi yangiliklar">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-sky-500 animate-ping"></span>
+                    </button>
+                    <button onclick="toggleDarkMode()" class="p-2 rounded-xl text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 focus:outline-none transition active:scale-95" title="Mavzuni o'zgartirish">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-400"></i>
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-600"></i>
+                    </button>
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 focus:outline-none transition" aria-label="Menyu">
+                        <i id="hamburger-icon" data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu Dropdown Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden border-b border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-900/98 px-4 pt-2 pb-4 space-y-1 shadow-lg transition-all">
+            <button onclick="switchTab('home')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center gap-3 transition">
+                <i data-lucide="home" class="w-4 h-4 text-sky-500"></i> Bosh sahifa
+            </button>
+            <button onclick="switchTab('yangiliklar')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center justify-between transition">
+                <span class="flex items-center gap-3"><i data-lucide="newspaper" class="w-4 h-4 text-red-500"></i> Yangiliklar va E'lonlar</span>
+                <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300">Yangi</span>
+            </button>
+            <button onclick="switchTab('huquq')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center gap-3 transition">
+                <i data-lucide="shield-check" class="w-4 h-4 text-sky-600"></i> Huquq bo'limi (Konstitutsiya)
+            </button>
+            <button onclick="switchTab('tarbiya')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center gap-3 transition">
+                <i data-lucide="heart" class="w-4 h-4 text-emerald-500"></i> Tarbiya bo'limi (Qadriyatlar)
+            </button>
+            <button onclick="switchTab('videolar')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center gap-3 transition">
+                <i data-lucide="video" class="w-4 h-4 text-purple-500"></i> Video darsliklar
+            </button>
+            <button onclick="switchTab('testlar')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center gap-3 transition">
+                <i data-lucide="award" class="w-4 h-4 text-amber-500"></i> Test va Sertifikat
+            </button>
+            <button onclick="switchTab('lugat')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center gap-3 transition">
+                <i data-lucide="book-open" class="w-4 h-4 text-indigo-500"></i> Huquqiy & Ma'naviy Lug'at
+            </button>
+            <button onclick="switchTab('chatbot')" class="mobile-nav-link w-full text-left px-3 py-2.5 rounded-xl font-medium text-slate-800 dark:text-slate-100 hover:bg-sky-50 dark:hover:bg-slate-800 flex items-center gap-3 transition">
+                <i data-lucide="bot" class="w-4 h-4 text-cyan-500"></i> AI Yordamchi Maslahatchi
+            </button>
+        </div>
+    </header>
+    <!-- TEZKOR XABARLAR TICKER -->
+    <div class="bg-gradient-to-r from-sky-950 via-slate-900 to-indigo-950 text-white border-b border-sky-800/40 py-2 overflow-hidden shadow-inner select-none">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center gap-3">
+            <div class="flex items-center gap-1.5 bg-red-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm flex-shrink-0 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-white"></span>
+                Tezkor
+            </div>
+            <div class="overflow-hidden relative w-full flex-grow text-xs sm:text-sm text-slate-200">
+                <div class="marquee-inner flex gap-8 whitespace-nowrap animate-marquee">
+                    <span class="cursor-pointer hover:text-sky-300 transition" onclick="openNewsModal(1)">⚡ Maktablarda 2026-yilgi BSB va CHSB baholash mezonlari hamda namunaviy testlar e'lon qilindi!</span>
+                    <span class="text-sky-400">✦</span>
+                    <span class="cursor-pointer hover:text-sky-300 transition" onclick="openNewsModal(2)">📜 Yangi tahrirdagi O'zbekiston Konstitutsiyasi bo'yicha maktab o'quvchilari o'rtasida Respublika insho tanlovi boshlandi!</span>
+                    <span class="text-sky-400">✦</span>
+                    <span class="cursor-pointer hover:text-sky-300 transition" onclick="openNewsModal(3)">🌿 Maktablarda "Milliy tarbiya va odob-axloq oyligi" doirasida ochiq darslar o'tkazilmoqda.</span>
+                    <span class="text-sky-400">✦</span>
+                    <span class="cursor-pointer hover:text-sky-300 transition" onclick="openNewsModal(4)">🛡️ Bolalar huquqlarini himoya qilish va ta'lim xavfsizligi bo'yicha yangi qonun kuchga kirdi.</span>
+                    <span class="text-sky-400">✦</span>
+                    <span class="cursor-pointer hover:text-sky-300 transition" onclick="openNewsModal(1)">⚡ Maktablarda 2026-yilgi BSB va CHSB baholash mezonlari hamda namunaviy testlar e'lon qilindi!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-8">
+        <!-- ==================== TAB: BOSH SAHIFA (HOME) ==================== -->
+        <section id="tab-home" class="tab-content space-y-8 sm:space-y-10">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-950 via-slate-900 to-indigo-950 text-white p-6 sm:p-10 md:p-12 shadow-2xl border border-sky-900/50">
+                <div class="absolute right-0 top-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4 hidden sm:block">
+                    <i data-lucide="scale" class="w-[450px] h-[450px]"></i>
+                </div>
+                <div class="absolute -top-24 -left-24 w-72 h-72 bg-sky-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute bottom-0 right-10 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-sky-500/20 text-sky-300 border border-sky-400/30">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Zamonaviy O'quv Portali
+                        </span>
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-400/30">
+                            <i data-lucide="award" class="w-3 h-3"></i> Maktab BSB 2026
+                        </span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
+                        Huquqiy bilim va Ma'naviy tarbiya — kelajak poydevori
+                    </h1>
+                    <p class="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed">
+                        O'zbekiston Respublikasi Konstitutsiyasi, maktab BSB/CHSB baholash talablari, so'nggi yangiliklar, odob-axloq qoidalari va interaktiv testlarni qulay o'rganing.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3 sm:gap-4">
+                        <button onclick="switchTab('yangiliklar')" class="w-full xs:w-auto px-5 py-3 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 font-bold text-white shadow-lg shadow-red-500/30 flex items-center justify-center gap-2 transition active:scale-95 text-sm sm:text-base">
+                            <i data-lucide="newspaper" class="w-4 h-4 sm:w-5 sm:h-5"></i> Yangiliklarni o'qish
+                        </button>
+                        <button onclick="switchTab('huquq')" class="w-full xs:w-auto px-5 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-white shadow-lg shadow-sky-500/30 flex items-center justify-center gap-2 transition active:scale-95 text-sm sm:text-base">
+                            <i data-lucide="book-open" class="w-4 h-4 sm:w-5 sm:h-5"></i> Konstitutsiya
+                        </button>
+                        <button onclick="switchTab('testlar')" class="w-full xs:w-auto px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-semibold text-white border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 transition active:scale-95 text-sm sm:text-base">
+                            <i data-lucide="check-circle-2" class="w-4 h-4 sm:w-5 sm:h-5"></i> Bilimni sinash
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- HOME: FEATURED NEWS HIGHLIGHT -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                            <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i data-lucide="newspaper" class="w-6 h-6 text-red-500"></i> So'nggi Yangiliklar va E'lonlar
+                            </h2>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">Maktab, huquq, BSB va ma'naviyat sohasidagi dolzarb xabarlar</p>
+                    </div>
+                    <button onclick="switchTab('yangiliklar')" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-sky-600 hover:text-sky-700 dark:text-sky-400 hover:underline">
+                        Barcha yangiliklar <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="home-news-cards">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+            <!-- Main Categories Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- Card 1: Yangiliklar -->
+                <div onclick="switchTab('yangiliklar')" class="group cursor-pointer p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <i data-lucide="newspaper" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-red-600 dark:text-red-400">Dolzarb</span>
+                    <h3 class="text-lg font-bold mb-2 group-hover:text-red-600 transition">Yangiliklar va E'lonlar</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mb-4 leading-relaxed">
+                        Maktab BSB, qonunchilikdagi yangi o'zgarishlar va muhim ma'rifiy tadbirlar tafsilotlari.
+                    </p>
+                    <span class="inline-flex items-center text-xs font-bold text-red-600 dark:text-red-400 group-hover:underline gap-1">
+                        O'qish <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </span>
+                </div>
+                <!-- Card 2: Huquq -->
+                <div onclick="switchTab('huquq')" class="group cursor-pointer p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-sky-100 dark:bg-sky-900/50 text-sky-600 dark:text-sky-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">Qonunchilik</span>
+                    <h3 class="text-lg font-bold mb-2 group-hover:text-sky-600 transition">Huquqiy Ta'lim</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mb-4 leading-relaxed">
+                        Yangilangan Konstitutsiya (3D kitob), inson huquqlari va bolalar huquqlari kafolatlari.
+                    </p>
+                    <span class="inline-flex items-center text-xs font-bold text-sky-600 dark:text-sky-400 group-hover:underline gap-1">
+                        O'rganish <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </span>
+                </div>
+                <!-- Card 3: Tarbiya -->
+                <div onclick="switchTab('tarbiya')" class="group cursor-pointer p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Odob-axloq</span>
+                    <h3 class="text-lg font-bold mb-2 group-hover:text-emerald-600 transition">Ma'naviyat va Tarbiya</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mb-4 leading-relaxed">
+                        Milliy qadriyatlar, muomala odobi, oilaviy ma'naviyat va interaktiv situatsiyalar.
+                    </p>
+                    <span class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:underline gap-1">
+                        Ko'rish <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </span>
+                </div>
+                <!-- Card 4: Interaktiv Testlar -->
+                <div onclick="switchTab('testlar')" class="group cursor-pointer p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Baholash</span>
+                    <h3 class="text-lg font-bold mb-2 group-hover:text-amber-600 transition">BSB Test va Sertifikat</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mb-4 leading-relaxed">
+                        Bilimlarni onlayn testlar orqali tekshiring va rasmiy elektron Sertifikatni yuklab oling.
+                    </p>
+                    <span class="inline-flex items-center text-xs font-bold text-amber-600 dark:text-amber-400 group-hover:underline gap-1">
+                        Boshlash <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </span>
+                </div>
+            </div>
+            <!-- Quick Stats -->
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl p-5 sm:p-6 text-white grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 border border-slate-800 shadow-lg">
+                <div class="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-sky-400">155+</div>
+                    <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Konstitutsiya Moddalari</div>
+                </div>
+                <div class="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-red-400">24/7</div>
+                    <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Yangiliklar va E'lonlar</div>
+                </div>
+                <div class="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-amber-400">BSB 100%</div>
+                    <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Namunaviy Baholash</div>
+                </div>
+                <div class="p-3 sm:p-4 rounded-xl bg-white/5 border border-white/5 text-center">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400">AI Bot</div>
+                    <div class="text-[11px] sm:text-xs text-slate-300 mt-1">Huquqiy Maslahatchi</div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== TAB: YANGILIKLAR (NEWS SECTION) ==================== -->
+        <section id="tab-yangiliklar" class="tab-content hidden space-y-6 sm:space-y-8">
+            <div class="bg-gradient-to-r from-rose-900/90 via-slate-900 to-sky-950 text-white rounded-3xl p-6 sm:p-8 border border-rose-800/40 shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl space-y-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-red-500/30 text-red-200 border border-red-400/30 uppercase tracking-wider">
+                        <i data-lucide="newspaper" class="w-3.5 h-3.5"></i> Axborot va Yangiliklar Markazi
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Maktab, Huquq va Ta'lim Yangiliklari</h2>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        O'zbekiston maktablaridagi BSB/CHSB baholash qoidalari, yangilangan qonunchilik hujjatlari, ma'naviy-ma'rifiy tanlovlar hamda ta'lim sohasidagi eng muhim voqealar.
+                    </p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none hidden sm:block">
+                    <i data-lucide="newspaper" class="w-64 h-64"></i>
+                </div>
+            </div>
+            <!-- Search and Filter Bar -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                    <!-- Search Input -->
+                    <div class="relative flex-grow max-w-md">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-3"></i>
+                        <input type="text" id="news-search-input" onkeyup="filterNews()" placeholder="Yangiliklar bo'yicha qidiruv (mavzu, kalit so'z)..." 
+                               class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700/60 border border-transparent focus:border-sky-500 text-xs sm:text-sm focus:ring-2 focus:ring-sky-500/20 outline-none text-slate-800 dark:text-slate-100 placeholder-slate-400 transition">
+                        <button onclick="clearNewsSearch()" id="news-clear-search" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between sm:justify-end gap-2 text-xs font-semibold text-slate-500">
+                        <span id="news-count-badge" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-sky-600 dark:text-sky-400">
+                            6 ta yangilik
+                        </span>
+                    </div>
+                </div>
+                <!-- Category Filters -->
+                <div class="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar text-xs">
+                    <button onclick="setNewsCategory('all')" id="cat-btn-all" class="news-cat-btn px-4 py-2 rounded-xl font-bold whitespace-nowrap bg-sky-600 text-white shadow-sm transition">
+                        Barchasi
+                    </button>
+                    <button onclick="setNewsCategory('bsb')" id="cat-btn-bsb" class="news-cat-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition">
+                        <span class="text-amber-500 mr-1">●</span> Maktab va BSB
+                    </button>
+                    <button onclick="setNewsCategory('huquq')" id="cat-btn-huquq" class="news-cat-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition">
+                        <span class="text-sky-500 mr-1">●</span> Qonun va Huquq
+                    </button>
+                    <button onclick="setNewsCategory('tarbiya')" id="cat-btn-tarbiya" class="news-cat-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition">
+                        <span class="text-emerald-500 mr-1">●</span> Ma'naviyat va Odob
+                    </button>
+                    <button onclick="setNewsCategory('elon')" id="cat-btn-elon" class="news-cat-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition">
+                        <span class="text-purple-500 mr-1">●</span> E'lonlar va Tanlovlar
+                    </button>
+                </div>
+            </div>
+            <!-- News Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="news-grid-container">
+                <!-- Dynamically populated via JS -->
+            </div>
+            <!-- Empty State -->
+            <div id="news-empty-state" class="hidden bg-white dark:bg-slate-800 rounded-3xl p-10 text-center border border-slate-200 dark:border-slate-700 space-y-4">
+                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center mx-auto text-slate-400">
+                    <i data-lucide="search-x" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-lg font-bold">Hech qanday yangilik topilmadi</h3>
+                <p class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto">
+                    Kiritilgan so'z bo'yicha ma'lumot chiqmadi. Boshqa so'z bilan qidirib ko'ring yoki barcha yangiliklarni ko'ring.
+                </p>
+                <button onclick="clearNewsSearch()" class="px-5 py-2 rounded-xl bg-sky-600 text-white font-semibold text-xs hover:bg-sky-700 transition">
+                    Barcha yangiliklarni ko'rsatish
+                </button>
+            </div>
+            <!-- Newsletter / Contact Box -->
+            <div class="bg-gradient-to-r from-sky-50 to-indigo-50 dark:from-slate-800 dark:to-slate-800/80 rounded-3xl p-6 sm:p-8 border border-sky-200 dark:border-slate-700 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="space-y-1 max-w-lg">
+                    <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white">Maktabingiz yangiliklarini yuboring!</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        O'z maktabingizdagi huquqiy va ma'naviy tadbirlar, BSB sinovlari haqidagi xabarlarni portalimizda e'lon qilishingiz mumkin.
+                    </p>
+                </div>
+                <div class="flex flex-col xs:flex-row w-full sm:w-auto gap-2">
+                    <input type="text" id="news-contact-input" placeholder="Telefon yoki Telegram..." class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:ring-2 focus:ring-sky-500 text-slate-800 dark:text-slate-100">
+                    <button onclick="submitNewsSuggestion()" class="px-5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs shadow-md transition active:scale-95 whitespace-nowrap">
+                        Yuborish
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== TAB: HUQUQ SECTION ==================== -->
+        <section id="tab-huquq" class="tab-content hidden space-y-6 sm:space-y-8">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative group w-full max-w-sm sm:max-w-md">
+                            <div class="absolute -inset-1 bg-gradient-to-r from-sky-600 to-indigo-600 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-300"></div>
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Shavkat_Mirziyoyev_in_2023.jpg/800px-Shavkat_Mirziyoyev_in_2023.jpg" 
+                                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/0284c7/ffffff?text=Prezident+Shavkat+Mirziyoyev'" 
+                                 alt="Shavkat Mirziyoyev - O'zbekiston Respublikasi Prezidenti" 
+                                 class="relative rounded-2xl object-cover w-full h-64 sm:h-80 shadow-lg border-2 border-white dark:border-slate-700">
+                        </div>
+                    </div>
+                    <div class="lg:col-span-7 space-y-4">
+                        <span class="px-3 py-1 bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-300 text-xs font-bold rounded-full uppercase tracking-wider">
+                            Davlat va Huquqiy Islohotlar
+                        </span>
+                        <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                            "Yangi O'zbekiston — inson qadri va huquqlari ustuvor bo'lgan davlatdir"
+                        </h2>
+                        <blockquote class="p-4 border-l-4 border-sky-500 bg-sky-50 dark:bg-slate-900/50 text-slate-700 dark:text-slate-300 italic rounded-r-xl text-xs sm:text-sm">
+                            "Inson, uning hayoti, erkinligi, sha'ni, qadr-qimmati va boshqa daxlsiz huquqlari oliy qadriyatdir. Qonun va adolat ustuvorligini ta'minlash bizning bosh maqsadimizdir."
+                            <footer class="mt-2 text-xs font-bold text-sky-600 dark:text-sky-400 not-italic">— Shavkat Mirziyoyev</footer>
+                        </blockquote>
+                        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Yangi tahrirdagi Konstitutsiya inson huquq va erkinliklarini kafolatlash, ijtimoiy davlat tamoyillarini mustahkamlash va yoshlarning ta'lim olish huquqini yuksaltirishga xizmat qiladi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Interactive 3D Constitution Book Reader -->
+            <div class="bg-white dark:bg-slate-800 rounded-3xl p-5 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-md">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-5 mb-5 border-b border-slate-200 dark:border-slate-700 gap-4">
+                    <div>
+                        <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="book-open" class="text-sky-600 w-5 h-5"></i> O'zbekiston Respublikasi Konstitutsiyasi
+                        </h3>
+                        <p class="text-[11px] sm:text-xs text-slate-500 mt-1">Interaktiv kitob (Yangi tahrir — 155 modda)</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <button onclick="speakCurrentPage()" id="audio-btn" class="flex-grow sm:flex-grow-0 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 hover:bg-sky-100 dark:hover:bg-slate-600 text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                            <i data-lucide="volume-2" class="w-4 h-4 text-sky-600"></i> <span id="audio-btn-text">Ovozli o'qish</span>
+                        </button>
+                        <select id="book-chapter-select" onchange="jumpToChapter(this.value)" class="flex-grow sm:flex-grow-0 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-xs font-semibold border-none focus:ring-2 focus:ring-sky-500 text-slate-800 dark:text-slate-200">
+                            <option value="0">1-Bob. Muqaddima va Tamoyillar</option>
+                            <option value="1">2-Bob. Insonning Asosiy Huquqlari</option>
+                            <option value="2">3-Bob. Ijtimoiy Huquqlar va Ta'lim</option>
+                            <option value="3">4-Bob. Jamiyat, Oila va Yoshlar</option>
+                            <option value="4">5-Bob. Oliy Majlis va Sud Hokimiyati</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="relative min-h-[380px] sm:min-h-[420px] bg-slate-50 dark:bg-slate-900 rounded-2xl p-5 sm:p-8 flex flex-col justify-between border border-slate-200 dark:border-slate-800 shadow-inner">
+                    <div id="book-content" class="prose dark:prose-invert max-w-none transition-all duration-300">
+                    </div>
+                    <div class="flex items-center justify-between pt-5 mt-5 border-t border-slate-200 dark:border-slate-800 gap-2">
+                        <button onclick="prevPage()" id="prev-btn" class="px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 font-semibold text-xs sm:text-sm flex items-center gap-2 hover:bg-sky-50 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i> Oldingi bet
+                        </button>
+                        <span id="page-indicator" class="text-xs font-bold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 whitespace-nowrap">
+                            Sahifa 1 / 5
+                        </span>
+                        <button onclick="nextPage()" id="next-btn" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-md transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            Keyingi bet <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== TAB: TARBIYA SECTION ==================== -->
+        <section id="tab-tarbiya" class="tab-content hidden space-y-6 sm:space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="px-3 py-1 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-xs font-bold rounded-full">Ma'naviyat Saboqlari</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Odob-ahloq va Milliy Qadriyatlar</h2>
+                <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm">
+                    Yaxshi xulq va go'zal muomala — inson ma'naviyatining eng oliy mezonidir.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 flex items-center justify-center font-bold">
+                        <i data-lucide="users" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold">Kattalarga Hurmat, Kichiklarga Izzat</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Kattalarga birinchi bo'lib salom berish, ularning yo'lini kesmaslik, gapini bo'lmaslik va maslahatlariga quloq tutish Sharqona odobning oltin qoidasidir.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center font-bold">
+                        <i data-lucide="home" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold">Oila va Muomala Madaniyati</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Oila — ma'naviyat beshigi. Ota-onani e'zozlash, shirinso'z bo'lish va oila a'zolariga g'amxo'rlik qilish har bir o'quvchining asosiy burchidir.
+                    </p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
+                    <div class="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-900/40 text-sky-600 flex items-center justify-center font-bold">
+                        <i data-lucide="globe" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-base sm:text-lg font-bold">Vatanparvarlik va Fidoyilik</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        O'z vatanini sevish, uning boy tarixi, tili va madaniy merosini asrab-avaylash hamda jamiyat ravnaqi uchun a'lo baholarda o'qish eng oliy fazilatdir.
+                    </p>
+                </div>
+            </div>
+            <!-- Interactive Scenario Dilemma -->
+            <div class="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 rounded-3xl p-5 sm:p-8 text-white space-y-5 shadow-xl border border-emerald-900/50">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-emerald-500/20 rounded-xl text-emerald-400 flex-shrink-0">
+                        <i data-lucide="help-circle" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg sm:text-xl font-bold">Hayotiy Situatsiya: Nima qilgan bo'lardingiz?</h3>
+                        <p class="text-xs text-emerald-200">Interaktiv axloqiy tanlov simulyatori</p>
+                    </div>
+                </div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 space-y-4">
+                    <p class="text-xs sm:text-sm md:text-base text-slate-200 font-medium leading-relaxed" id="scenario-text">
+                        Jamoat transportida (avtobusda) ketayotganingizda, yoshi katta nuroniy otaxon chiqdi, ammo hamma o'rindiqlar band. Siz esa maktabdan charchab qaytyapsiz. Nima qilasiz?
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="scenario-options">
+                        <button onclick="handleScenarioChoice(1)" class="p-3.5 rounded-xl bg-white/10 hover:bg-emerald-600/80 text-left text-xs font-semibold transition border border-white/10">
+                            A) Darhol o'rnimdan turib, tabassum bilan joy beraman va salom beraman.
+                        </button>
+                        <button onclick="handleScenarioChoice(2)" class="p-3.5 rounded-xl bg-white/10 hover:bg-amber-600/80 text-left text-xs font-semibold transition border border-white/10">
+                            B) O'zimni charchaganga solib, telefonga tikilib o'tiraman.
+                        </button>
+                    </div>
+                    <div id="scenario-result" class="hidden p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs sm:text-sm leading-relaxed text-emerald-100">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== TAB: VIDEOLAR SECTION ==================== -->
+        <section id="tab-videolar" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold">Video Darsliklar va Ma'rifiy Roliklar</h2>
+                    <p class="text-xs text-slate-500">Huquq, Konstitutsiya va tarbiya mavzusidagi interaktiv video darslar</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterVideos('all')" class="video-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-600 text-white">Barchasi</button>
+                    <button onclick="filterVideos('huquq')" class="video-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Huquqiy</button>
+                    <button onclick="filterVideos('tarbiya')" class="video-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Ma'naviy</button>
+                    <button onclick="filterVideos('bsb')" class="video-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Maktab BSB</button>
+                </div>
+            </div>
+            <!-- Video Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="video-grid">
+                <!-- Video Item 1 -->
+                <div class="video-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm" data-category="huquq">
+                    <div class="relative group cursor-pointer" onclick="openVideoModal('Konstitutsiya - Bizning Baxtimiz Qomusi', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80" onerror="this.src='https://placehold.co/600x400/0284c7/fff?text=Huquq+Darsi'" alt="Video thumbnail" class="w-full h-44 object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition">
+                            <div class="w-12 h-12 rounded-full bg-sky-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                                <i data-lucide="play" class="w-6 h-6 fill-current ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300">HUQUQ</span>
+                        <h4 class="font-bold text-sm leading-snug">Konstitutsiya — Bosh qomusimiz va fuqarolik huquqlari</h4>
+                        <p class="text-xs text-slate-500">Davomiyligi: 12 daqiqa · Yangi tahrir</p>
+                    </div>
+                </div>
+                <!-- Video Item 2 -->
+                <div class="video-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm" data-category="tarbiya">
+                    <div class="relative group cursor-pointer" onclick="openVideoModal('Milliy Odob-Ahloq Qoidalari', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80" onerror="this.src='https://placehold.co/600x400/10b981/fff?text=Tarbiya+Darsi'" alt="Video thumbnail" class="w-full h-44 object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition">
+                            <div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                                <i data-lucide="play" class="w-6 h-6 fill-current ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">TARBIYA</span>
+                        <h4 class="font-bold text-sm leading-snug">Muomala madaniyati va kattalarga hurmat tamoyillari</h4>
+                        <p class="text-xs text-slate-500">Davomiyligi: 15 daqiqa · Tarbiya darsi</p>
+                    </div>
+                </div>
+                <!-- Video Item 3 -->
+                <div class="video-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm" data-category="bsb">
+                    <div class="relative group cursor-pointer" onclick="openVideoModal('Maktab BSB va CHSB Baholash Tartibi', 'https://www.youtube.com/embed/dQw4w9WgXcQ')">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" onerror="this.src='https://placehold.co/600x400/f59e0b/fff?text=BSB+Qo%27llanma'" alt="Video thumbnail" class="w-full h-44 object-cover">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition">
+                            <div class="w-12 h-12 rounded-full bg-amber-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                                <i data-lucide="play" class="w-6 h-6 fill-current ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 space-y-2">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">MAKTAB BSB</span>
+                        <h4 class="font-bold text-sm leading-snug">BSB imtihonlariga tayyorgarlik va namunaviy savollar tahlili</h4>
+                        <p class="text-xs text-slate-500">Davomiyligi: 14 daqiqa · Metodik qo'llanma</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== TAB: TESTLAR SECTION ==================== -->
+        <section id="tab-testlar" class="tab-content hidden space-y-8">
+            <div id="quiz-start-screen" class="max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-10 border border-slate-200 dark:border-slate-700 text-center space-y-6 shadow-md">
+                <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/40 text-amber-600 rounded-2xl flex items-center justify-center mx-auto">
+                    <i data-lucide="award" class="w-8 h-8"></i>
+                </div>
+                <div class="space-y-2">
+                    <span class="px-3 py-1 bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 text-xs font-bold rounded-full">
+                        Maktab BSB Sinovi
+                    </span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold">Huquq va Tarbiya fanidan bilimlarni sinash</h2>
+                    <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm max-w-lg mx-auto">
+                        Test savollariga javob berib, o'z bilim darajangizni aniqlang va rasmiy nomli elektron Sertifikatni yuklab oling!
+                    </p>
+                </div>
+                <div class="max-w-sm mx-auto space-y-2 text-left">
+                    <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Ism va familiyangizni kiriting:</label>
+                    <input type="text" id="student-name-input" placeholder="Masalan: Sardor Aliyev" 
+                           class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-xs focus:ring-2 focus:ring-sky-500 outline-none">
+                </div>
+                <div class="pt-2">
+                    <button onclick="startQuiz()" class="w-full sm:w-auto px-8 py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-lg shadow-sky-500/20 transition active:scale-95 text-sm">
+                        Testni boshlash (5 ta savol)
+                    </button>
+                </div>
+            </div>
+            <!-- Active Quiz Screen -->
+            <div id="quiz-active-screen" class="hidden max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-3xl p-5 sm:p-8 border border-slate-200 dark:border-slate-700 shadow-lg space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-4">
+                    <span id="quiz-progress-text" class="text-xs font-bold text-sky-600 dark:text-sky-400">Savol 1 / 5</span>
+                    <span id="quiz-timer" class="text-xs font-mono font-bold px-2.5 py-1 bg-slate-100 dark:bg-slate-700 rounded-lg">10:00</span>
+                </div>
+                <h3 id="quiz-question" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug">
+                    Savol yuklanmoqda...
+                </h3>
+                <div id="quiz-options" class="space-y-3">
+                </div>
+                <div class="flex justify-end pt-4">
+                    <button id="quiz-next-btn" onclick="submitAnswer()" class="w-full sm:w-auto px-6 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl shadow-md transition disabled:opacity-50">
+                        Keyingi savol
+                    </button>
+                </div>
+            </div>
+            <!-- Quiz Result Screen -->
+            <div id="quiz-result-screen" class="hidden max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-3xl p-5 sm:p-8 border border-slate-200 dark:border-slate-700 text-center space-y-6 shadow-xl">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+                    <i data-lucide="check-circle" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold">Tabriklaymiz! Test muvaffaqiyatli topshirildi</h2>
+                <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl max-w-xs mx-auto border border-slate-200 dark:border-slate-800">
+                    <p class="text-xs text-slate-500 uppercase font-bold">Sizning natijangiz</p>
+                    <p id="quiz-score-display" class="text-3xl font-extrabold text-sky-600 mt-1">100%</p>
+                </div>
+                <!-- Printable Certificate -->
+                <div id="printable-certificate" class="p-6 sm:p-8 border-4 border-double border-amber-400 bg-amber-50/60 dark:bg-slate-900/60 rounded-3xl text-center space-y-3 max-w-full overflow-hidden">
+                    <div class="flex items-center justify-center gap-2 text-amber-600">
+                        <i data-lucide="award" class="w-8 h-8"></i>
+                    </div>
+                    <h4 class="font-black text-slate-900 dark:text-white uppercase tracking-widest text-base sm:text-lg">FAXRITYORLI SERTIFIKAT</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Ushbu sertifikat egasi:</p>
+                    <h3 id="cert-student-name" class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 uppercase tracking-wide">
+                        Sardor Aliyev
+                    </h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+                        Maktab BSB talablari hamda Huquq va Tarbiya fani bo'yicha onlayn imtihonni a'lo natijalar bilan topshirganligi uchun taqdim etiladi.
+                    </p>
+                    <div class="pt-3 border-t border-amber-200 dark:border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-500 px-2">
+                        <span>Sana: 2026-yil</span>
+                        <span id="cert-id-badge">ID: BSB-2026-8891</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="window.print()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 shadow-md">
+                        <i data-lucide="printer" class="w-4 h-4"></i> Chop etish / Saqlash
+                    </button>
+                    <button onclick="restartQuiz()" class="px-5 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 font-bold text-xs sm:text-sm rounded-xl">
+                        Qayta topshirish
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== TAB: LUG'AT SECTION ==================== -->
+        <section id="tab-lugat" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold">Huquqiy va Ma'naviy Lug'at</h2>
+                    <p class="text-xs text-slate-500">Qonunchilik atamalari, BSB tushunchalari va axloqiy iboralar izohi</p>
+                </div>
+                <div class="w-full sm:w-72 relative">
+                    <input type="text" id="dictionary-search" onkeyup="filterDictionary()" placeholder="Atamani izlash (masalan, BSB, Konstitutsiya)..." 
+                           class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs focus:ring-2 focus:ring-sky-500 outline-none text-slate-800 dark:text-slate-100">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                </div>
+            </div>
+            <!-- Terms List -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="dictionary-list">
+                <div class="dict-item p-4 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">MAKTAB BSB</span>
+                    <h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">BSB (Bo'lim Yuzasidan Baholash)</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Maktablarda fan boblari va bo'limlari yakunida o'quvchilarning bilim, ko'nikma va amaliy malakalarini xolisona aniqlash uchun o'tkaziladigan oraliq nazorat sinovi.</p>
+                </div>
+                <div class="dict-item p-4 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">MAKTAB BSB</span>
+                    <h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">CHSB (Choraklik Yuzasidan Baholash)</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Chorak yakunida butun o'tilgan materiallar asosida umumiy o'quv natijalarini standartlashtirilgan test va vazifalar orqali baholash tizimi.</p>
+                </div>
+                <div class="dict-item p-4 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300">HUQUQ</span>
+                    <h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Konstitutsiya</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Davlatning Oliy qonuni bo'lib, davlat tuzilishi, inson qadri, huquq va erkinliklarini mustahkamlovchi oliy yuridik kuchga ega hujjat.</p>
+                </div>
+                <div class="dict-item p-4 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">TARBIYA</span>
+                    <h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Ma'naviyat</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Insonning ruhiy va intellektual olami, uning axloqiy mezonlari, iymon-e'tiqodi va vatanparvarlik dunyoqarashini ifodalovchi tushuncha.</p>
+                </div>
+                <div class="dict-item p-4 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300">HUQUQ</span>
+                    <h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Qonun Ustuvorligi</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Jamiyatda barcha fuqarolar, mansabdor shaxslar va davlat organlarining qonun oldida tengligi va qonun talablariga so'zsiz bo'ysunishi tamoyili.</p>
+                </div>
+                <div class="dict-item p-4 sm:p-5 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-1">
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">TARBIYA</span>
+                    <h4 class="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Bag'rikenglik (Tolerantlik)</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">O'zga millat, din, madaniyat va fikrlarga nisbatan hurmat, sabr-toqat va do'stona munosabatda bo'lish fazilati.</p>
+                </div>
+            </div>
+        </section>
+        <!-- ==================== TAB: CHATBOT ASSISTANT ==================== -->
+        <section id="tab-chatbot" class="tab-content hidden max-w-4xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-xl overflow-hidden flex flex-col h-[520px] sm:h-[580px]">
+                <div class="p-3.5 sm:p-4 bg-gradient-to-r from-sky-600 to-indigo-600 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="bot" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xs sm:text-sm">Adolat AI — Huquq va BSB Maslahatchisi</h3>
+                            <p class="text-[10px] text-sky-100">Savollaringizga onlayn yordam beradi</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="text-[10px] text-sky-100 hidden xs:inline">Onlayn</span>
+                    </div>
+                </div>
+                <!-- Quick Prompt Chips -->
+                <div class="p-2 sm:p-2.5 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700 flex gap-2 overflow-x-auto custom-scrollbar">
+                    <button onclick="quickPrompt('Konstitutsiyaning 1-moddasi nima haqida?')" class="px-3 py-1 rounded-full bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] whitespace-nowrap hover:bg-sky-50 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 transition">
+                        📜 1-modda nima haqida?
+                    </button>
+                    <button onclick="quickPrompt('Maktabda BSB baholash qanday o\'tkaziladi?')" class="px-3 py-1 rounded-full bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] whitespace-nowrap hover:bg-sky-50 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 transition">
+                        📊 BSB baholash tartibi
+                    </button>
+                    <button onclick="quickPrompt('Kattalarga hurmat ko\'rsatish odobi haqida aytib ber')" class="px-3 py-1 rounded-full bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] whitespace-nowrap hover:bg-sky-50 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 transition">
+                        🌿 Odob-axloq qoidalari
+                    </button>
+                    <button onclick="quickPrompt('So\'nggi yangiliklar qanday?')" class="px-3 py-1 rounded-full bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-[11px] whitespace-nowrap hover:bg-sky-50 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 transition">
+                        ⚡ So'nggi yangiliklar
+                    </button>
+                </div>
+                <!-- Chat Messages Scroll Area -->
+                <div id="chat-messages" class="flex-grow p-4 overflow-y-auto space-y-4 custom-scrollbar bg-slate-50 dark:bg-slate-900/50">
+                    <div class="flex gap-2.5 sm:gap-3 max-w-[85%]">
+                        <div class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center flex-shrink-0 text-xs font-bold shadow-sm">AI</div>
+                        <div class="bg-white dark:bg-slate-800 p-3 sm:p-3.5 rounded-2xl rounded-tl-none border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-200 shadow-sm leading-relaxed">
+                            Assalomu alaykum! Men Huquq, Tarbiya va maktab BSB masalalari bo'yicha sun'iy intellekt maslahatchisiman. Konstitutsiya, maktab imtihonlari yoki odob-axloq haqida qanday savolingiz bor?
+                        </div>
+                    </div>
+                </div>
+                <!-- Chat Input Form -->
+                <form onsubmit="handleChatSubmit(event)" class="p-2.5 sm:p-3 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Savolingizni yozing (Masalan: BSB tartibi, 50-modda...)" 
+                           class="flex-grow px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-700 border-none text-xs sm:text-sm focus:ring-2 focus:ring-sky-500 outline-none text-slate-800 dark:text-slate-100">
+                    <button type="submit" class="px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl transition flex items-center justify-center flex-shrink-0 active:scale-95 shadow-md">
+                        <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <!-- ==================== NEWS DETAIL MODAL ==================== -->
+    <div id="news-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden max-w-3xl w-full shadow-2xl border border-slate-200 dark:border-slate-700 flex flex-col my-auto max-h-[92vh]">
+            <!-- Modal Header -->
+            <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/80">
+                <div class="flex items-center gap-2">
+                    <span id="modal-news-badge" class="px-2.5 py-1 rounded-full text-[11px] font-extrabold uppercase bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300">
+                        Maktab BSB
+                    </span>
+                    <span id="modal-news-date" class="text-xs text-slate-500 font-medium">15-Oktabr, 2026</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="changeFontSize(-1)" class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold" title="Shriftni kichraytirish">A-</button>
+                    <button onclick="changeFontSize(1)" class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold" title="Shriftni kattalashtirish">A+</button>
+                    <button onclick="closeNewsModal()" class="p-1.5 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-800 dark:hover:text-white transition">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Modal Body (Scrollable) -->
+            <div class="p-4 sm:p-6 overflow-y-auto custom-scrollbar space-y-4 text-slate-700 dark:text-slate-200">
+                <img id="modal-news-image" src="" alt="News banner" class="w-full h-48 sm:h-72 object-cover rounded-2xl shadow-md border border-slate-200 dark:border-slate-700">
+                <h2 id="modal-news-title" class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                    Sarlavha
+                </h2>
+                <div class="flex flex-wrap items-center gap-4 text-xs text-slate-500 pb-3 border-b border-slate-200 dark:border-slate-700">
+                    <span class="flex items-center gap-1.5"><i data-lucide="eye" class="w-4 h-4 text-sky-500"></i> <span id="modal-news-views">1,420</span> ko'rildi</span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-4 h-4 text-amber-500"></i> <span id="modal-news-readtime">3 daqiqa o'qish</span></span>
+                    <span class="flex items-center gap-1.5"><i data-lucide="building" class="w-4 h-4 text-emerald-500"></i> <span id="modal-news-source">Ta'lim portali matbuot xizmati</span></span>
+                </div>
+                <div id="modal-news-content" class="space-y-4 text-xs sm:text-sm leading-relaxed">
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700 flex flex-col xs:flex-row items-center justify-between gap-3 bg-slate-50 dark:bg-slate-800/80">
+                <div class="flex items-center gap-2 w-full xs:w-auto">
+                    <button onclick="shareCurrentNews('telegram')" class="flex-1 xs:flex-none px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition">
+                        <i data-lucide="send" class="w-3.5 h-3.5"></i> Telegramda ulashish
+                    </button>
+                    <button onclick="copyNewsLink()" class="flex-1 xs:flex-none px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 font-semibold text-xs flex items-center justify-center gap-1.5 transition">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Nusxalash
+                    </button>
+                </div>
+                <button onclick="closeNewsModal()" class="w-full xs:w-auto px-5 py-2 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold text-xs hover:opacity-90 transition">
+                    Yopish
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- VIDEO MODAL -->
+    <div id="video-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden max-w-3xl w-full shadow-2xl border border-slate-700 space-y-3 p-4">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-700">
+                <h3 id="video-modal-title" class="font-bold text-xs sm:text-base text-slate-900 dark:text-white truncate">Video Darslik</h3>
+                <button onclick="closeVideoModal()" class="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black">
+                <iframe id="video-modal-iframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 shadow-2xl py-2 px-1">
+        <div class="flex items-center justify-around max-w-md mx-auto">
+            <button onclick="switchTab('home')" id="bottom-nav-home" class="bottom-nav-item flex flex-col items-center gap-1 text-[10px] font-bold text-sky-600 dark:text-sky-400">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span>Bosh sahifa</span>
+            </button>
+            <button onclick="switchTab('yangiliklar')" id="bottom-nav-yangiliklar" class="bottom-nav-item relative flex flex-col items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                <i data-lucide="newspaper" class="w-5 h-5"></i>
+                <span class="absolute top-0 right-1 w-2 h-2 rounded-full bg-red-500"></span>
+                <span>Yangiliklar</span>
+            </button>
+            <button onclick="switchTab('huquq')" id="bottom-nav-huquq" class="bottom-nav-item flex flex-col items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                <i data-lucide="shield-check" class="w-5 h-5"></i>
+                <span>Huquq</span>
+            </button>
+            <button onclick="switchTab('tarbiya')" id="bottom-nav-tarbiya" class="bottom-nav-item flex flex-col items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                <i data-lucide="heart" class="w-5 h-5"></i>
+                <span>Tarbiya</span>
+            </button>
+            <button onclick="switchTab('testlar')" id="bottom-nav-testlar" class="bottom-nav-item flex flex-col items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                <i data-lucide="award" class="w-5 h-5"></i>
+                <span>Testlar</span>
+            </button>
+            <button onclick="switchTab('chatbot')" id="bottom-nav-chatbot" class="bottom-nav-item flex flex-col items-center gap-1 text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                <i data-lucide="bot" class="w-5 h-5"></i>
+                <span>AI Bot</span>
+            </button>
+        </div>
+    </nav>
+    <!-- FOOTER -->
+    <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 mt-12 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3 text-xs text-slate-500">
+            <div class="flex items-center justify-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold">
+                    <i data-lucide="scale" class="w-4 h-4"></i>
+                </div>
+                <span class="font-extrabold text-slate-800 dark:text-slate-200">ADOLAT & TARBIYA · MAKTAB BSB</span>
+            </div>
+            <p>O'zbekiston Respublikasi maktab o'quvchilari, o'qituvchilari va ota-onalari uchun mo'ljallangan yagona axborot-ta'lim portali.</p>
+            <p>© 2026 Barcha huquqlar himoyalangan. Yangilangan Konstitutsiya va davlat ta'lim standartlari asosida yaratilgan.</p>
+        </div>
+    </footer>
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ================= Global News Data =================
+        const newsArticles = [
+            {
+                id: 1,
+                title: "Maktablarda 2026-yilgi BSB va CHSB baholash tizimi bo'yicha yangi ko'rsatmalar tasdiqlandi",
+                category: "bsb",
+                categoryName: "Maktab va BSB",
+                date: "15-Oktabr, 2026",
+                readTime: "3 daqiqa",
+                views: 1420,
+                likes: 84,
+                liked: false,
+                image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=800&q=80",
+                source: "Maktabgacha va maktab ta'limi vazirligi",
+                summary: "2026-o'quv yilida umumta'lim maktablarida o'quvchilarning bilim va ko'nikmalarini baholashda BSB (bo'lim yuzasidan) va CHSB (choraklik) sinovlarining shaffofligi hamda xolis mezonlari kuchaytirildi.",
+                content: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-100">Umumta'lim maktablarida o'quv jarayoni sifatini oshirish va baholashda inson omilini kamaytirish maqsadida BSB va CHSB tizimiga muhim o'zgartirishlar kiritildi.</p>
+                    <p>Yangi qoidalarga ko'ra:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><strong>Bo'lim yuzasidan baholash (BSB):</strong> Har bir fan bob yakunida 25-40 daqiqalik yozma yoki test shaklida o'tkaziladi. O'quvchilar topshiriqlarni mustaqil fikrlash darajasiga ko'ra bajaradi.</li>
+                        <li><strong>Choraklik baholash (CHSB):</strong> Har chorak oxirida barcha maktablar uchun yagona standartlashtirilgan savollar asosida tashkil etiladi.</li>
+                        <li>Baholash natijalari elektron jurnalga 24 soat ichida kiritilishi majburiy etib belgilandi.</li>
+                    </ul>
+                    <blockquote class="p-3 bg-amber-50 dark:bg-amber-950/40 border-l-4 border-amber-500 text-xs italic rounded-r-xl">
+                        "Asosiy maqsad — baho uchun emas, mustahkam bilim va hayotiy ko'nikma uchun o'qitishni ta'minlashdir."
+                    </blockquote>
+                    <p>O'quvchilar va ota-onalar test natijalari hamda tahlillarini ushbu ta'lim portali orqali kuzatib borishlari mumkin.</p>
+                `
+            },
+            {
+                id: 2,
+                title: "Yangilangan Konstitutsiya bo'yicha maktab o'quvchilari o'rtasida Respublika tanlovi e'lon qilindi",
+                category: "huquq",
+                categoryName: "Qonun va Huquq",
+                date: "14-Oktabr, 2026",
+                readTime: "4 daqiqa",
+                views: 2850,
+                likes: 156,
+                liked: false,
+                image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80",
+                source: "Adliya vazirligi matbuot xizmati",
+                summary: "Yoshlar o'rtasida huquqiy savodxonlikni yuksaltirish maqsadida 'Konstitutsiya — mening huquqim va burchim' mavzusida Respublika insho va huquqiy bilimlar bellashuvi boshlandi.",
+                content: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-100">Adliya vazirligi hamda Maktabgacha va maktab ta'limi vazirligi hamkorligida 8-11-sinf o'quvchilari uchun keng ko'lamli tanlov e'lon qilindi.</p>
+                    <p>Tanlov uch bosqichda tashkil etiladi:</p>
+                    <ol class="list-decimal pl-5 space-y-1">
+                        <li><strong>Maktab bosqichi:</strong> Oktyabr oyi davomida har bir maktabda o'tkaziladi.</li>
+                        <li><strong>Tuman/Shahar bosqichi:</strong> Noyabr oyining birinchi o'n kunligida.</li>
+                        <li><strong>Respublika bosqichi:</strong> Konstitutsiya kuni arafasida Toshkent shahrida tantanali ravishda o'tkaziladi.</li>
+                    </ol>
+                    <p>G'olib o'quvchilar zamonaviy noutbuklar, planshetlar va OTMlarga kirishda qo'shimcha imtiyozli ball beruvchi sertifikatlar bilan taqdirlanadi.</p>
+                `
+            },
+            {
+                id: 3,
+                title: "Maktablarda 'Milliy tarbiya va odob-axloq oyligi' o'tkazilmoqda",
+                category: "tarbiya",
+                categoryName: "Ma'naviyat va Odob",
+                date: "13-Oktabr, 2026",
+                readTime: "3 daqiqa",
+                views: 980,
+                likes: 67,
+                liked: false,
+                image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80",
+                source: "Respublika Ma'naviyat va ma'rifat markazi",
+                summary: "'Kattalarga hurmat, kichiklarga izzat' shiori ostida maktablarda ma'naviy uchrashuvlar, ota-onalar bilan ochiq muloqotlar va tarbiyaviy soatlar o'tkazilmoqda.",
+                content: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-100">O'quvchi-yoshlarni milliy va umuminsoniy qadriyatlar ruhida tarbiyalash, ularda yuksak muomala madaniyatini shakllantirish maqsadida barcha ta'lim muassasalarida maxsus oylik boshlandi.</p>
+                    <p>Oylik doirasida quyidagi tadbirlar rejalashtirilgan:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Faxriy ustozlar va nuroniylar bilan uchrashuvlar;</li>
+                        <li>"Eng odobli sinf" va "Namunali o'quvchi" nominatsiyalari bo'yicha maktab tanlovlari;</li>
+                        <li>Ijtimoiy tarmoqlarda odob-axloq va kiberxavfsizlik madaniyati bo'yicha mahorat darslari.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 4,
+                title: "Bolalar huquqlari kafolatlari va ta'lim xavfsizligi to'g'risidagi qonun kuchga kirdi",
+                category: "huquq",
+                categoryName: "Qonun va Huquq",
+                date: "12-Oktabr, 2026",
+                readTime: "3 daqiqa",
+                views: 3110,
+                likes: 198,
+                liked: false,
+                image: "https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?auto=format&fit=crop&w=800&q=80",
+                source: "Oliy Majlis Qonunchilik palatasi",
+                summary: "Voyaga yetmaganlarning sha'ni, qadr-qimmati va jismoniy daxlsizligini ta'minlash, ta'lim maskanlarida xavfsiz muhit yaratish bo'yicha qonuniy choralar qat'iylashtirildi.",
+                content: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-100">Yangi qonun bilan maktablarda o'quvchilarga nisbatan har qanday ruhiy yoki jismoniy tazyiq o'tkazish, kamsitish yoki noqonuniy xatti-harakatlar taqiqlandi.</p>
+                    <p>Asosiy yangiliklar:</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Har bir maktabda bolalar huquqlari bo'yicha ishonch qutisi va bepul onlayn yordam liniyasi joriy etildi;</li>
+                        <li>O'quvchilarning shaxsiy ma'lumotlari daxlsizligi to'liq kafolatlana boshladi;</li>
+                        <li>Ota-onalar va o'qituvchilar o'rtasida huquqiy tushuntirish seminar-treninglari tashkil etiladi.</li>
+                    </ul>
+                `
+            },
+            {
+                id: 5,
+                title: "Huquq va Tarbiya fani o'qituvchilari uchun yangi metodik qo'llanma nashr etildi",
+                category: "bsb",
+                categoryName: "Maktab va BSB",
+                date: "11-Oktabr, 2026",
+                readTime: "2 daqiqa",
+                views: 1750,
+                likes: 92,
+                liked: false,
+                image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80",
+                source: "Milliy ta'lim instituti",
+                summary: "Yangi o'quv dasturi asosida tayyorlangan interaktiv dars ishlanmalari, BSB baholash mezonlari va vaziyatli topshiriqlar to'plami portalga yuklandi.",
+                content: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-100">Pedagoglar uchun darslarni qiziqarli va zamonaviy texnologiyalar asosida tashkil etishga mo'ljallangan maxsus qo'llanma taqdim etildi.</p>
+                `
+            },
+            {
+                id: 6,
+                title: "Yoshlar o'rtasida 'Eng yaxshi huquqiy videorolik' Respublika ko'rik-tanlovi boshlandi",
+                category: "elon",
+                categoryName: "E'lonlar va Tanlovlar",
+                date: "10-Oktabr, 2026",
+                readTime: "3 daqiqa",
+                views: 2340,
+                likes: 120,
+                liked: false,
+                image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+                source: "Yoshlar ishlari agentligi",
+                summary: "Maktab o'quvchilari internet va ijtimoiy tarmoqlarda huquqiy madaniyat, odob-axloq hamda Konstitutsiya mavzusida 1 daqiqalik qisqa videoroliklar bilan ishtirok etishlari mumkin.",
+                content: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-100">Yoshlar ishlari agentligi va portalimiz hamkorligida ijodkor o'quvchilar uchun katta tanlov e'lon qilinadi.</p>
+                    <p>Bosh mukofot: Eng zamonaviy noutbuk va diplom!</p>
+                `
+            }
+        ];
+        let currentActiveNewsCategory = 'all';
+        let currentModalNewsId = null;
+        let modalFontSize = 14;
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadBookPage(0);
+            renderNewsCards();
+            renderHomeNewsCards();
+        });
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            const toastIcon = document.getElementById('toast-icon');
+            toastText.innerText = message;
+            if (isSuccess) {
+                toastIcon.setAttribute('data-lucide', 'check-circle');
+                toastIcon.className = 'w-4 h-4 text-emerald-400 dark:text-emerald-500';
+            } else {
+                toastIcon.setAttribute('data-lucide', 'alert-circle');
+                toastIcon.className = 'w-4 h-4 text-amber-400 dark:text-amber-500';
+            }
+            lucide.createIcons();
+            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-10');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-10');
+            }, 3000);
+        }
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) target.classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-sky-600', 'bg-sky-50', 'dark:bg-slate-800', 'dark:text-sky-400');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300');
+            });
+            const activeDesktopBtn = document.getElementById(`nav-${tabId}`);
+            if (activeDesktopBtn) {
+                activeDesktopBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+                activeDesktopBtn.classList.add('text-sky-600', 'bg-sky-50', 'dark:bg-slate-800', 'dark:text-sky-400');
+            }
+            document.querySelectorAll('.bottom-nav-item').forEach(btn => {
+                btn.classList.remove('text-sky-600', 'dark:text-sky-400', 'font-bold');
+                btn.classList.add('text-slate-500', 'dark:text-slate-400', 'font-medium');
+            });
+            const activeBottomBtn = document.getElementById(`bottom-nav-${tabId}`);
+            if (activeBottomBtn) {
+                activeBottomBtn.classList.remove('text-slate-500', 'dark:text-slate-400', 'font-medium');
+                activeBottomBtn.classList.add('text-sky-600', 'dark:text-sky-400', 'font-bold');
+            }
+            document.getElementById('mobile-menu').classList.add('hidden');
+            const hamburger = document.getElementById('hamburger-icon');
+            if (hamburger) hamburger.setAttribute('data-lucide', 'menu');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            lucide.createIcons();
+        }
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const isHidden = menu.classList.contains('hidden');
+            const hamburger = document.getElementById('hamburger-icon');
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                if (hamburger) hamburger.setAttribute('data-lucide', 'x');
+            } else {
+                menu.classList.add('hidden');
+                if (hamburger) hamburger.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+        function renderHomeNewsCards() {
+            const container = document.getElementById('home-news-cards');
+            if (!container) return;
+            const top3 = newsArticles.slice(0, 3);
+            container.innerHTML = top3.map(item => `
+                <div class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700/60 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="relative overflow-hidden cursor-pointer" onclick="openNewsModal(${item.id})">
+                            <img src="${item.image}" alt="${item.title}" class="w-full h-44 object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/0284c7/fff?text=Yangilik'">
+                            <span class="absolute top-3 left-3 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase bg-white/90 dark:bg-slate-900/90 text-slate-800 dark:text-slate-100 shadow">
+                                ${item.categoryName}
+                            </span>
+                        </div>
+                        <div class="p-4 sm:p-5 space-y-2">
+                            <div class="flex items-center justify-between text-[11px] text-slate-500">
+                                <span>${item.date}</span>
+                                <span>${item.readTime}</span>
+                            </div>
+                            <h3 onclick="openNewsModal(${item.id})" class="font-bold text-sm sm:text-base text-slate-900 dark:text-white line-clamp-2 hover:text-sky-600 dark:hover:text-sky-400 transition cursor-pointer">
+                                ${item.title}
+                            </h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                ${item.summary}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-4 sm:px-5 pb-4 pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
+                        <button onclick="openNewsModal(${item.id})" class="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1">
+                            Batafsil o'qish <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="toggleNewsLike(${item.id}, event)" class="flex items-center gap-1 text-xs text-slate-500 hover:text-red-500 transition">
+                            <i data-lucide="heart" class="w-4 h-4 ${item.liked ? 'text-red-500 fill-red-500' : ''}"></i>
+                            <span>${item.likes}</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+        function renderNewsCards(filteredList = null) {
+            const container = document.getElementById('news-grid-container');
+            const emptyState = document.getElementById('news-empty-state');
+            const countBadge = document.getElementById('news-count-badge');
+            if (!container) return;
+            const list = filteredList !== null ? filteredList : getFilteredNews();
+            if (list.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                if (countBadge) countBadge.innerText = "0 ta yangilik";
+                return;
+            }
+            emptyState.classList.add('hidden');
+            if (countBadge) countBadge.innerText = `${list.length} ta yangilik`;
+            container.innerHTML = list.map(item => {
+                let badgeColorClass = "bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300";
+                if (item.category === 'bsb') badgeColorClass = "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300";
+                if (item.category === 'tarbiya') badgeColorClass = "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300";
+                if (item.category === 'elon') badgeColorClass = "bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300";
+                return `
+                    <div class="news-item-card bg-white dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="relative overflow-hidden cursor-pointer" onclick="openNewsModal(${item.id})">
+                                <img src="${item.image}" alt="${item.title}" class="w-full h-48 sm:h-52 object-cover hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/0284c7/fff?text=Yangilik'">
+                                <span class="absolute top-3 left-3 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider ${badgeColorClass} shadow-md backdrop-blur-md">
+                                    ${item.categoryName}
+                                </span>
+                            </div>
+                            <div class="p-5 space-y-3">
+                                <div class="flex items-center justify-between text-xs text-slate-500">
+                                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> ${item.date}</span>
+                                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${item.readTime}</span>
+                                </div>
+                                <h3 onclick="openNewsModal(${item.id})" class="font-bold text-base sm:text-lg text-slate-900 dark:text-white line-clamp-2 hover:text-sky-600 dark:hover:text-sky-400 transition cursor-pointer leading-snug">
+                                    ${item.title}
+                                </h3>
+                                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 line-clamp-3 leading-relaxed">
+                                    ${item.summary}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                            <button onclick="openNewsModal(${item.id})" class="px-4 py-2 rounded-xl bg-sky-50 dark:bg-slate-700/60 hover:bg-sky-600 hover:text-white dark:hover:bg-sky-600 text-sky-600 dark:text-sky-300 font-bold text-xs flex items-center gap-1.5 transition">
+                                <span>Batafsil o'qish</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <div class="flex items-center gap-3">
+                                <span class="flex items-center gap-1 text-xs text-slate-400">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> ${item.views}
+                                </span>
+                                <button onclick="toggleNewsLike(${item.id}, event)" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-red-500 transition flex items-center gap-1 text-xs">
+                                    <i data-lucide="heart" class="w-4 h-4 ${item.liked ? 'text-red-500 fill-red-500' : ''}"></i>
+                                    <span>${item.likes}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+        function getFilteredNews() {
+            const query = (document.getElementById('news-search-input')?.value || '').toLowerCase().trim();
+            return newsArticles.filter(item => {
+                const matchesCat = currentActiveNewsCategory === 'all' || item.category === currentActiveNewsCategory;
+                const matchesSearch = !query || item.title.toLowerCase().includes(query) || item.summary.toLowerCase().includes(query);
+                return matchesCat && matchesSearch;
+            });
+        }
+        function setNewsCategory(cat) {
+            currentActiveNewsCategory = cat;
+            document.querySelectorAll('.news-cat-btn').forEach(btn => {
+                btn.className = "news-cat-btn px-4 py-2 rounded-xl font-semibold whitespace-nowrap bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 transition";
+            });
+            const active = document.getElementById(`cat-btn-${cat}`);
+            if (active) {
+                active.className = "news-cat-btn px-4 py-2 rounded-xl font-bold whitespace-nowrap bg-sky-600 text-white shadow-sm transition";
+            }
+            renderNewsCards();
+        }
+        function filterNews() {
+            const query = document.getElementById('news-search-input').value;
+            const clearBtn = document.getElementById('news-clear-search');
+            if (query.trim()) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderNewsCards();
+        }
+        function clearNewsSearch() {
+            const input = document.getElementById('news-search-input');
+            if (input) input.value = '';
+            document.getElementById('news-clear-search').classList.add('hidden');
+            setNewsCategory('all');
+        }
+        function toggleNewsLike(id, event) {
+            if (event) event.stopPropagation();
+            const article = newsArticles.find(a => a.id === id);
+            if (!article) return;
+            article.liked = !article.liked;
+            if (article.liked) {
+                article.likes++;
+                showToast("Yangilik yoqtirildi! ❤️");
+            } else {
+                article.likes--;
+            }
+            renderNewsCards();
+            renderHomeNewsCards();
+        }
+        function openNewsModal(id) {
+            const item = newsArticles.find(a => a.id === id);
+            if (!item) return;
+            currentModalNewsId = id;
+            item.views++;
+            document.getElementById('modal-news-title').innerText = item.title;
+            document.getElementById('modal-news-image').src = item.image;
+            document.getElementById('modal-news-badge').innerText = item.categoryName;
+            document.getElementById('modal-news-date').innerText = item.date;
+            document.getElementById('modal-news-views').innerText = item.views;
+            document.getElementById('modal-news-readtime').innerText = item.readTime + " o'qish";
+            document.getElementById('modal-news-source').innerText = item.source;
+            document.getElementById('modal-news-content').innerHTML = item.content;
+            modalFontSize = 14;
+            document.getElementById('modal-news-content').style.fontSize = `${modalFontSize}px`;
+            document.getElementById('news-modal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            lucide.createIcons();
+        }
+        function closeNewsModal() {
+            document.getElementById('news-modal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            renderNewsCards();
+            renderHomeNewsCards();
+        }
+        function changeFontSize(delta) {
+            modalFontSize = Math.max(12, Math.min(22, modalFontSize + delta * 2));
+            document.getElementById('modal-news-content').style.fontSize = `${modalFontSize}px`;
+        }
+        function shareCurrentNews(platform) {
+            const item = newsArticles.find(a => a.id === currentModalNewsId);
+            if (!item) return;
+            const url = window.location.href;
+            const text = `${item.title} — Huquq va Tarbiya portali yangiligi`;
+            if (platform === 'telegram') {
+                const tgUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
+                window.open(tgUrl, '_blank');
+            }
+        }
+        function copyNewsLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast("Yangilik havolasi nusxalandi!");
+            }).catch(() => {
+                showToast("Nusxalandi!");
+            });
+        }
+        function submitNewsSuggestion() {
+            const input = document.getElementById('news-contact-input');
+            const val = input.value.trim();
+            if (!val) {
+                showToast("Iltimos, telefon yoki Telegram kontakt kiriting!", false);
+                return;
+            }
+            input.value = '';
+            showToast("Rahmat! Taklifingiz tahririyatga qabul qilindi.");
+        }
+        // ================= 3D Constitution Book Logic =================
+        const bookPages = [
+            {
+                chapter: "1-Bob. Muqaddima va Davlat Suvereniteti",
+                content: `
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">1-Modda. Davlat Tuzilishi</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed mb-4">O'zbekiston — suveren, demokratik, huquqiy, ijtimoiy va dunyoviy davlat. Davlatning rasmiy nomi "O'zbekiston Respublikasi" va "O'zbekiston" teng ma'nolidir.</p>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">13-Modda. Inson Qadri</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed">O'zbekiston Respublikasida demokratiya umuminsoniy tamoyillarga asoslanadi, ularga ko'ra inson, uning hayoti, erkinligi, sha'ni va qadr-qimmati oliy qadriyat hisoblanadi.</p>
+                `
+            },
+            {
+                chapter: "2-Bob. Inson va Fuqaroning Asosiy Huquqlari",
+                content: `
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">25-Modda. Yashash Huquqi</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed mb-4">Yashash huquqi har bir insonning daxlsiz huquqidir. Inson hayotiga suiqasd qilish eng og'ir jinoyatdir. O'zbekiston Respublikasida o'lim jazosi qat'iyan taqiqlanadi.</p>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">26-Modda. Inson Qadr-Qimmati</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed">Insonning sha'ni va qadr-qimmati daxlsizdir. Hech narsa ularni kamsitish uchun asos bo'lishi mumkin emas.</p>
+                `
+            },
+            {
+                chapter: "3-Bob. Ijtimoiy Huquqlar va Ta'lim Olish Kafolati",
+                content: `
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">50-Modda. Ta'lim Olish Huquqi</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed mb-4">Har kim ta'lim olish huquqiga ega. Davlat bepul umumiy o'rta ta'lim va boshlang'ich kasb-hunar ta'limi olinishini kafolatlaydi. Umumiy o'rta ta'lim majburiydir.</p>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">52-Modda. O'qituvchilarning Huquqiy Maqomi</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed">O'zbekiston Respublikasida o'qituvchining mehnati jamiyat va davlatni rivojlantirish, sog'lom, barkamol avlodni shakllantirish hamda tarbiyalashning asosi sifatida e'tirof etiladi va himoya qilinadi.</p>
+                `
+            },
+            {
+                chapter: "4-Bob. Oila, Yoshlar va Jamiyat",
+                content: `
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">76-Modda. Oila Asoslari</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed mb-4">Oila jamiyatning asosiy bo'g'inidir hamda u jamiyat va davlat muhofazasida bo'lish huquqiga ega.</p>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">77-Modda. Ota-onaning Mas'uliyati</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed">Ota-onalar o'z farzandlarini voyaga yetguniga qadar boqishi, ularning tarbiyasi, ta'lim olishi, barkamol va sog'lom rivojlanishi haqida g'amxo'rlik qilishga majburdirlar.</p>
+                `
+            },
+            {
+                chapter: "5-Bob. Davlat Hokimiyati va Qonun Ustuvorligi",
+                content: `
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">105-Modda. Oliy Majlis</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed mb-4">O'zbekiston Respublikasining Oliy Majlisi oliy davlat vakillik organi bo'lib, qonun chiqaruvchi hokimiyatni amalga oshiradi.</p>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-sky-600 dark:text-sky-400 mb-3">128-Modda. Mustaqil Sud Hokimiyati</h3>
+                    <p class="text-xs sm:text-sm leading-relaxed">O'zbekiston Respublikasida sud hokimiyati qonun chiqaruvchi va ijro etuvchi hokimiyatlardan mustaqil holda ish yuritadi.</p>
+                `
+            }
+        ];
+        let currentPageIndex = 0;
+        let isSpeaking = false;
+        function loadBookPage(index) {
+            currentPageIndex = index;
+            const contentDiv = document.getElementById('book-content');
+            contentDiv.innerHTML = `
+                <div class="text-[11px] font-extrabold text-sky-600 dark:text-sky-400 uppercase tracking-widest mb-2">${bookPages[index].chapter}</div>
+                ${bookPages[index].content}
+            `;
+            document.getElementById('page-indicator').innerText = `Sahifa ${index + 1} / ${bookPages.length}`;
+            document.getElementById('prev-btn').disabled = index === 0;
+            document.getElementById('next-btn').disabled = index === bookPages.length - 1;
+            document.getElementById('book-chapter-select').value = index;
+        }
+        function nextPage() {
+            if (currentPageIndex < bookPages.length - 1) loadBookPage(currentPageIndex + 1);
+        }
+        function prevPage() {
+            if (currentPageIndex > 0) loadBookPage(currentPageIndex - 1);
+        }
+        function jumpToChapter(index) {
+            loadBookPage(parseInt(index));
+        }
+        function speakCurrentPage() {
+            if (!('speechSynthesis' in window)) {
+                showToast("Brauzeringiz ovozli o'qishni qo'llab-quvvatlamaydi", false);
+                return;
+            }
+            if (isSpeaking) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                document.getElementById('audio-btn-text').innerText = "Ovozli o'qish";
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const text = document.getElementById('book-content').innerText;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'uz-UZ';
+            utterance.rate = 0.95;
+            utterance.onstart = () => {
+                isSpeaking = true;
+                document.getElementById('audio-btn-text').innerText = "To'xtatish";
+            };
+            utterance.onend = () => {
+                isSpeaking = false;
+                document.getElementById('audio-btn-text').innerText = "Ovozli o'qish";
+            };
+            utterance.onerror = () => {
+                isSpeaking = false;
+                document.getElementById('audio-btn-text').innerText = "Ovozli o'qish";
+            };
+            window.speechSynthesis.speak(utterance);
+        }
+        function handleScenarioChoice(choice) {
+            const resultDiv = document.getElementById('scenario-result');
+            resultDiv.classList.remove('hidden');
+            if (choice === 1) {
+                resultDiv.className = "p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs sm:text-sm leading-relaxed text-emerald-100";
+                resultDiv.innerHTML = "<strong>Barakalla! To'g'ri va oqilana qaror.</strong> Kattalarga joy berish va muomala madaniyatiga amal qilish insonning yuksak ma'naviyati va odobini ko'rsatadi.";
+                showToast("To'g'ri axloqiy qaror qabul qilindi!");
+            } else {
+                resultDiv.className = "p-4 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs sm:text-sm leading-relaxed text-amber-100";
+                resultDiv.innerHTML = "<strong>Afsuski, bu noto'g'ri tanlov!</strong> Kattalarni e'tiborsiz qoldirish milliy qadriyatlarimiz va axloq qoidalariga to'g'ri kelmaydi.";
+                showToast("Bunday vaziyatda kattalarga hurmat ko'rsatish lozim!", false);
+            }
+        }
+        function filterVideos(cat) {
+            document.querySelectorAll('.video-filter-btn').forEach(b => {
+                b.className = "video-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300";
+            });
+            event.target.className = "video-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-sky-600 text-white";
+            document.querySelectorAll('.video-card').forEach(card => {
+                if (cat === 'all' || card.dataset.category === cat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+        function openVideoModal(title, url) {
+            document.getElementById('video-modal-title').innerText = title;
+            document.getElementById('video-modal-iframe').src = url;
+            document.getElementById('video-modal').classList.remove('hidden');
+        }
+        function closeVideoModal() {
+            document.getElementById('video-modal-iframe').src = '';
+            document.getElementById('video-modal').classList.add('hidden');
+        }
+        const quizData = [
+            {
+                q: "Yangilangan O'zbekiston Respublikasi Konstitutsiyasida nechta modda mavjud?",
+                options: ["128 ta modda", "155 ta modda", "180 ta modda", "100 ta modda"],
+                correct: 1
+            },
+            {
+                q: "Maktablarda BSB qisqartmasi nimani anglatadi?",
+                options: ["Bo'lim yuzasidan baholash", "Boshlang'ich sinf bilimi", "Barcha sinflar bahosi", "Boshqaruv sinov balli"],
+                correct: 0
+            },
+            {
+                q: "Konstitutsiyaga ko'ra kimning hayoti, sha'ni va daxlsizligi oliy qadriyat hisoblanadi?",
+                options: ["Faqat davlat idoralarining", "Inson va uning qadr-qimmati", "Siyosiy partiyalarning", "Tashkilotlarning"],
+                correct: 1
+            },
+            {
+                q: "Sharqona muomala odobida kattalarga birinchi bo'lib nima qilinadi?",
+                options: ["Salom beriladi", "Savol beriladi", "Kutiladi", "Indamay o'tib ketiladi"],
+                correct: 0
+            },
+            {
+                q: "O'zbekistonda bepul ta'lim olishning qaysi bosqichi davlat tomonidan kafolatlanadi?",
+                options: ["Umumiy o'rta ta'lim", "Xususiy repetitorlik", "Faqat pullik kurslar", "Magistratura"],
+                correct: 0
+            }
+        ];
+        let currentQuizIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name-input');
+            const studentName = nameInput.value.trim() || "O'quvchi";
+            document.getElementById('cert-student-name').innerText = studentName;
+            currentQuizIndex = 0;
+            score = 0;
+            document.getElementById('quiz-start-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-active-screen').classList.remove('hidden');
+            loadQuizQuestion();
+        }
+        function loadQuizQuestion() {
+            selectedAnswer = null;
+            const q = quizData[currentQuizIndex];
+            document.getElementById('quiz-progress-text').innerText = `Savol ${currentQuizIndex + 1} / ${quizData.length}`;
+            document.getElementById('quiz-question').innerText = q.q;
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full p-3 sm:p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 text-left text-xs sm:text-sm font-semibold hover:bg-sky-50 dark:hover:bg-slate-700 transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i data-lucide="circle" class="w-4 h-4 text-slate-400"></i>`;
+                btn.onclick = () => selectOption(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+            lucide.createIcons();
+        }
+        function selectOption(idx, btn) {
+            selectedAnswer = idx;
+            document.querySelectorAll('#quiz-options button').forEach(b => {
+                b.classList.remove('border-sky-600', 'bg-sky-50', 'dark:bg-slate-700', 'text-sky-600');
+            });
+            btn.classList.add('border-sky-600', 'bg-sky-50', 'dark:bg-slate-700', 'text-sky-600');
+        }
+        function submitAnswer() {
+            if (selectedAnswer === null) {
+                showToast("Iltimos, variantlardan birini tanlang!", false);
+                return;
+            }
+            if (selectedAnswer === quizData[currentQuizIndex].correct) {
+                score++;
+            }
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                loadQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+        function showQuizResult() {
+            document.getElementById('quiz-active-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.remove('hidden');
+            const percentage = Math.round((score / quizData.length) * 100);
+            document.getElementById('quiz-score-display').innerText = `${percentage}% (${score} / ${quizData.length})`;
+            document.getElementById('cert-id-badge').innerText = `ID: BSB-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+            showToast("Test yakunlandi!");
+        }
+        function restartQuiz() {
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-start-screen').classList.remove('hidden');
+        }
+        function filterDictionary() {
+            const query = document.getElementById('dictionary-search').value.toLowerCase();
+            document.querySelectorAll('.dict-item').forEach(item => {
+                const text = item.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+        function quickPrompt(text) {
+            document.getElementById('chat-input').value = text;
+            handleChatSubmit(new Event('submit'));
+        }
+        function handleChatSubmit(e) {
+            if (e) e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+            const messagesContainer = document.getElementById('chat-messages');
+            const userBubble = document.createElement('div');
+            userBubble.className = "flex gap-2.5 justify-end";
+            userBubble.innerHTML = `
+                <div class="bg-sky-600 text-white p-3 rounded-2xl rounded-tr-none text-xs sm:text-sm max-w-[85%] shadow-sm leading-relaxed">
+                    ${text}
+                </div>
+            `;
+            messagesContainer.appendChild(userBubble);
+            input.value = '';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            setTimeout(() => {
+                let botReply = "Savolingiz uchun tashakkur! O'zbekiston Respublikasi qonunlari va maktab standartlariga ko'ra, inson huquqlari hamda ma'naviy tarbiya oliy o'rinda turadi.";
+                const lower = text.toLowerCase();
+                if (lower.includes('1-modda') || lower.includes('birinchi modda')) {
+                    botReply = "O'zbekiston Respublikasi Konstitutsiyasining 1-moddasiga ko'ra: O'zbekiston — suveren, demokratik, huquqiy, ijtimoiy va dunyoviy davlatdir.";
+                } else if (lower.includes('bsb') || lower.includes('baholash') || lower.includes('chsb')) {
+                    botReply = "BSB (Bo'lim yuzasidan baholash) va CHSB (Choraklik baholash) — o'quvchilarning darslardagi haqiqiy bilim va amaliy ko'nikmalarini baholash uchun o'tkaziladi. Testlar va yozma ishlar shaffof tarzda elektron baholanadi.";
+                } else if (lower.includes('yangilik') || lower.includes('xabar')) {
+                    botReply = "Eng so'nggi yangiliklar: 2026-yilgi BSB baholash qoidalari e'lon qilindi, Yangi Konstitutsiya bo'yicha maktab tanlovi va 'Milliy tarbiya oyligi' start oldi. Yuqoridagi 'Yangiliklar' bo'limida barchasini to'liq o'qishingiz mumkin!";
+                } else if (lower.includes('odob') || lower.includes('tarbiya') || lower.includes('hurmat')) {
+                    botReply = "Sharqona axloq va tarbiyaning asosi — kattalarga hurmat, kichiklarga shafqat ko'rsatishdir. Shirinso'zlik, ota-ona hurmati va vatanparvarlik har bir o'quvchining faxridir.";
+                } else if (lower.includes('ta\'lim') || lower.includes('50') || lower.includes('maktab')) {
+                    botReply = "Konstitutsiyaning 50-moddasiga ko'ra, har bir fuqaro ta'lim olish huquqiga ega. Bepul umumiy o'rta ta'lim davlat kafolatidadir.";
+                }
+                const botBubble = document.createElement('div');
+                botBubble.className = "flex gap-2.5 max-w-[85%]";
+                botBubble.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center flex-shrink-0 text-xs font-bold shadow-sm">AI</div>
+                    <div class="bg-white dark:bg-slate-800 p-3 sm:p-3.5 rounded-2xl rounded-tl-none border border-slate-200 dark:border-slate-700 text-xs sm:text-sm text-slate-700 dark:text-slate-200 shadow-sm leading-relaxed">
+                        ${botReply}
+                    </div>
+                `;
+                messagesContainer.appendChild(botBubble);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 500);
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeNewsModal();
+                closeVideoModal();
+            }
+        });
+    </script>
+</body>
+</html>
